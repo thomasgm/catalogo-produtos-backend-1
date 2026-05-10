@@ -1,6 +1,7 @@
 using CatalogoProdutos.DTOs;
 using CatalogoProdutos.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CatalogoProdutos.Controllers;
 
@@ -16,6 +17,7 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         var produtos = await _service.GetAllAsync(page, pageSize);
@@ -23,6 +25,7 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetById(int id)
     {
         var produto = await _service.GetByIdAsync(id);
@@ -31,6 +34,7 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Create([FromBody] ProdutoCreateDto dto)
     {
         var criado = await _service.CreateAsync(dto);
@@ -38,6 +42,7 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> Update(int id, [FromBody] ProdutoUpdateDto dto)
     {
         var atualizado = await _service.UpdateAsync(id, dto);
@@ -46,6 +51,7 @@ public class ProdutosController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         var deletado = await _service.DeleteAsync(id);
